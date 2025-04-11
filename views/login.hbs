@@ -1,0 +1,25 @@
+<div class="container">
+	<h1>Login</h1>
+	<form method="POST" action="/login">
+		<div id="elementContainer">
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" required>
+		</div>
+		<div id="elementContainer">
+			<label for="password">Password: </label>
+			<input type="password" id="password" name="password" required>
+		</div>
+		<button type="submit" class="btn btn-primary">Login</button>
+		<button id="Register" class="btn btn-primary">Register</button>
+	</form>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+
+	const homeButton = document.getElementById("Register");
+		if (homeButton) {
+			homeButton.addEventListener("click", function() {window.location.href = '/register';});
+		}
+	});
+</script>

@@ -1,0 +1,67 @@
+<div id="container">
+	<h1>{{title}}</h1>
+	<form id="searchForm">
+		<input type="text" name="searchField" placeholder="Search for books..." required>
+		<button type="submit">Search</button>
+	</form>
+	<div id="searchResults">
+		{{#if books.length}}
+			<div class="bookList">
+				{{#each books}}
+					<div class="book">
+						<a href="/book/{{id}}">
+							{{#if cover}}
+								<img src="{{cover}}" alt="{{title}}">
+							{{/if}}
+							<h3>{{title}}</h3>
+							<p>by {{author}}</p>
+						</a>
+					</div>
+				{{/each}}
+			</div>
+		{{/if}}
+	</div>
+
+	{{#if user}}
+		<div class="userActions">
+			{{#eq user.role "admin"}}
+				<button id="seeUsers" class="btn btn-primary">See Users</button>
+			{{/eq}}
+		</div>
+	{{/if}}
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const homeButton = document.getElementById("seeUsers");
+		if (homeButton) {
+			homeButton.addEventListener("click", function() {window.location.href = '/users';});
+		}
+	});
+	document.getElementById("searchForm").addEventListener("submit", function(e) {
+		e.preventDefault();
+		const query = this.searchField.value;
+			
+		fetch(`/api/books?q=${encodeURIComponent(query)}`)
+			.then(response => response.json())
+			.then(books => {
+				const resultsDiv = document.getElementById("searchResults");
+				if (books.length === 0) {
+					resultsDiv.innerHTML = '<p>No books found</p>';
+					return;
+				}
+				
+				let html = '<h2>Search Results</h2><div class="book-list">';
+				books.forEach(book => {
+					html += `<div class="book"><a href="/book/${book.googleID || book.id}">${book.cover ? `<img src="${book.cover}" alt="${book.title}">` : ''}
+								<h3>${book.title}</h3><p>by ${book.author || 'Unknown Author'}</p></a></div>`;
+				});
+				html += '</div>';
+				resultsDiv.innerHTML = html;
+			})
+			.catch(error => {
+				console.error("Error:", error);
+				document.getElementById("searchResults").innerHTML = '<p>Error searching for books</p>';
+			});
+	});
+</script>

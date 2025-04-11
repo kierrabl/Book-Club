@@ -1,0 +1,56 @@
+<div id="container">
+	<h1>{{book.title}}</h1>
+	<p>by {{book.author}}</p>
+
+	{{#if book.cover}}
+		<img src="{{book.cover}}">
+	{{/if}}
+
+	<div id="reviewsLayout">
+		<div id="reviewsContainer">
+			<h3>Reviews</h3>
+			{{#if reviews.length}}
+				{{#each reviews}}
+					<div class="review">
+						<p><strong>{{username}}</strong> rated this {{rating}}/5</p>
+						<p>{{comment}}</p>
+						<small>{{formatDate createdAt}}</small>
+					</div>
+				{{/each}}
+			{{else}}
+				<p>No reviews yet.</p>
+			{{/if}}
+		</div>
+		<div id="reviewContainer">
+			{{#if user}}
+				<h3>Add Your Review</h3>
+				<form action="/book/{{book.id}}/review" method="POST">
+					<textarea name="comment" placeholder="Write review here..."></textarea>
+					<div>
+						<select name="rating" required>
+							<option value="">Select Rating</option>
+							<option value="1">1 Star</option>
+							<option value="2">2 Stars</option>
+							<option value="3">3 Stars</option>
+							<option value="4">4 Stars</option>
+							<option value="5">5 Stars</option>
+						</select>
+						<button type="submit">Submit Review</button>
+						<button id="homeButton" class="btn btn-primary">Return to Homepage</button>
+						</form>
+					</div>
+				</form>
+			{{/if}}
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+
+		const homeButton = document.getElementById("homeButton");
+		if (homeButton) {
+			homeButton.addEventListener("click", function() {window.location.href = '/';});
+		}
+	});
+</script>

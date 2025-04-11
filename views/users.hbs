@@ -1,0 +1,32 @@
+<div id="container">
+	<h2>Book Club Users</h2>
+	<table class="userTable">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>Role</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each userEntries}}
+				<tr>
+					<td>{{this.id}}</td>
+					<td>{{this.username}}</td>
+					<td>{{this.role}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<button id="homeButton" class="btn btn-primary">Return to Homepage</button>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+
+		const homeButton = document.getElementById("homeButton");
+		if (homeButton) {
+			homeButton.addEventListener("click", function() {window.location.href = '/';});
+		}
+	});
+</script>
